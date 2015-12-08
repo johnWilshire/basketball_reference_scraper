@@ -8,10 +8,11 @@ class Game:
     visiting, visiting team
     date, the date of the game.
     """
-    def __init__(self, home, visiting, date):
+    def __init__(self, home, visiting, date,game_id):
         self.home = home
         self.visiting = visiting
         self.date = date
+        self.game_id = game_id
         self.events = list()
         self.players = list()
 
