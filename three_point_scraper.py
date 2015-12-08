@@ -8,20 +8,29 @@ from game import Game
 from player import Player
 from players import Players
 from event import Event
-
+import sys
 
 def main():
     pbp_url = 'http://www.basketball-reference.com/boxscores/pbp/201510270GSW.html'
     player_url = 'http://www.basketball-reference.com/players/c/curryst01.html'
     players = Players()
-    urls = player_url_to_seasons(player_url)
+    seasons= player_url_to_seasons(player_url)
+    f = open('basketball_shots.csv','w')
+    num_seasons = len(seasons)
+    for season in [seasons[0]]:
+        print season
+        games = player_season_to_game_url(season)
+        pbp_games = game_urls_to_pbp_urls(games)
+        for game in pbp_games:
+            print game
+            pbp_url_to_game(game,players)
 
-    games = player_season_to_game_url(urls[0])
-    for game in games:
-        print pbp_url_to_game(pbp_url,players)
+    # prints the players information to a csv
+    players.dump_players(f)
     return 0
 
-#TODO given a player find pbp urls of all games
+
+#TODO for when we have multiple players filter games so no duplicate games are scraped
 
 def player_url_to_seasons(url):
     urls = list()
@@ -40,6 +49,9 @@ def player_season_to_game_url(url):
         if re.search('boxscores.*\.html',link['href']):
             games.append('http://www.basketball-reference.com'+link['href'])
     return list(set(games))
+
+def game_urls_to_pbp_urls(urls):
+    return [re.sub('boxscores','boxscores/pbp',url) for url in urls]
 
 # takes a url for a games play by play and extracts information from it
 def pbp_url_to_game(url,players):
@@ -77,13 +89,15 @@ def pbp_url_to_game(url,players):
                 event_type = match.group()
                 makes_shot = re.search('makes|misses',event_data.text).group() == 'makes'
                 player_links = event_data.find_all('a')
+                distance = '~~'
+                if re.search(' at rim',event_data.text):
+                    distance = 0
+                elif re.search('from (\d+) ft',event_data.text):
+                    distance = int(re.search('from (\d+) ft',event_data.text).group(1))
                 # find existing player or make new player
                 player = players.getPlayer(player_links[0])
-                event = Event(game, time, quater, team, player, event_type, makes_shot,score, score_diff)
-                game.add_to_events(event)
+                event = Event(game, time, quater, team, player, event_type, makes_shot,distance, score, score_diff)
                 player.add_to_events(event)
-
-                print event.to_str()
 
 
 def extract_soup(url):

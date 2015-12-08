@@ -1,7 +1,7 @@
 #!/bin/usr/python
 
 # this class is a game
-
+import time
 class Game:
     """
     home, home team
@@ -13,11 +13,9 @@ class Game:
         self.visiting = visiting
         self.date = date
         self.game_id = game_id
-        self.events = list()
-        self.players = list()
 
-    def add_to_events(self, event):
-        self.events.append(event)
+    def headers(self):
+        return '|'.join(['date', 'game_id'])
 
-    def add_to_players(self, player):
-        self.events.append(player)
+    def to_str(self):
+        return '|'.join([self.date, self.game_id])

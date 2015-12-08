@@ -1,10 +1,11 @@
 #!/bin/usr/python
 
 # class aggregating the player class
-
+import re
 from player import Player
+
 class Players:
-    def __int__(self):
+    def __init__(self):
         self.players = dict()
 
     def getPlayer(self, bio_tag):
@@ -19,9 +20,14 @@ class Players:
 
 
     def extract_player_id(self,bio_tag):
-        return bio_tag
+        return re.search('/players/./(.*)\.html',bio_tag['href']).group(1)
 
-    def dump_players(self):
+    def dump_players(self, file):
+        headers = True
         for player_id in self.players:
-            print self.players[player_id].to_str()
+            for event in self.players[player_id].event_list:
+                if headers:
+                    headers = False
+                    file.write(event.headers()+'\n')
+                file.write(event.to_str()+'\n')
 
