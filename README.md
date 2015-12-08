@@ -7,6 +7,8 @@ This includes events that the specified player was not a part of.
 
 It is our plan to use this dataset to examine streaks in sports using dynamic Bradley Terry modeling.
 
-###py/ contains the scraper and class files
+###py/*
+Contains the scraper so far and class files.
 
-###R/ contains soem analysis scripts
+###R/* 
+contains some dataset loading and analysis scripts.
