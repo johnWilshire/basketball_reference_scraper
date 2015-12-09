@@ -7,8 +7,10 @@ from player import Player
 class Players:
     def __init__(self):
         self.players = dict()
+        self.events = 0
 
     def getPlayer(self, bio_tag):
+        self.events += 1
         player_id = self.extract_player_id(bio_tag)
         if player_id in self.players:
             return self.players[player_id]

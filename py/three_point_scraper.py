@@ -12,25 +12,45 @@ import sys
 
 def main():
     pbp_url = 'http://www.basketball-reference.com/boxscores/pbp/201510270GSW.html'
-    player_url = 'http://www.basketball-reference.com/players/c/curryst01.html'
-    players = Players()
-    seasons= player_url_to_seasons(player_url)
-    f = open('basketball_shots.csv','w')
-    num_seasons = len(seasons)
-    for season in [seasons[0]]:
-        print season
-        games = player_season_to_game_url(season)
-        pbp_games = game_urls_to_pbp_urls(games)
-        for game in pbp_games:
-            print game
-            pbp_url_to_game(game,players)
+    # we are going to scrape s. curry, k. bryant, l. james.
+    player_urls = ['http://www.basketball-reference.com/players/c/curryst01.html',
+                   'http://www.basketball-reference.com/players/j/jamesle01.html',
+                   'http://www.basketball-reference.com/players/h/hardeja01.html',
+    ]
 
-    # prints the players information to a csv
+    players = Players()
+    i = 0
+    print "getting game info"
+    games = player_list_to_unique_pbp(player_urls)
+    print "game info acquired"
+    for game in games:
+        print 'players: ', len(players.players), 'events: ',players.events, game
+        print 'game:', i, "/", len(games), "with ", len(games) - i, "remaining"
+        i += 1
+        pbp_url_to_game(game,players)
+
+    f = open('basketball_shots.csv','w')
+    #prints the players information to a csv
     players.dump_players(f)
     return 0
 
 
 #TODO for when we have multiple players filter games so no duplicate games are scraped
+# takes a list of player urls
+def player_list_to_unique_pbp(player_urls):
+    seasons = list()
+    for player in player_urls:
+        print "getting seasons for ", player
+        seasons += player_url_to_seasons(player)
+    games = list()
+    for season in seasons:
+        print "getting games from", season
+        games += game_urls_to_pbp_urls( player_season_to_game_url(season))
+    print "filtering games from  ", len(games)
+    games = list(set(games))
+    print "down to uniq ", len(games)
+    return games
+
 
 def player_url_to_seasons(url):
     urls = list()

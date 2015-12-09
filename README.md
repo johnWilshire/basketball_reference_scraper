@@ -11,4 +11,4 @@ It is our plan to use this dataset to examine streaks in sports using dynamic Br
 Contains the scraper so far and class files.
 
 ###R/* 
-contains some dataset loading and analysis scripts.
+Contains some dataset loading and basic analysis scripts.
