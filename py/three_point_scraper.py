@@ -24,12 +24,12 @@ def main():
     games = player_list_to_unique_pbp(player_urls)
     print "game info acquired"
     for game in games:
-        print 'players: ', len(players.players), 'events: ',players.events, game
+        print 'players: ', len(players.players), 'events: ', players.events, game
         print 'game:', i, "/", len(games), "with ", len(games) - i, "remaining"
         i += 1
         pbp_url_to_game(game,players)
 
-    f = open('basketball_shots.csv','w')
+    f = open('basketball_shots.csv', 'w')
     #prints the players information to a csv
     players.dump_players(f)
     return 0
@@ -75,7 +75,7 @@ def game_urls_to_pbp_urls(urls):
 
 # takes a url for a games play by play and extracts information from it
 def pbp_url_to_game(url,players):
-    game_id = re.search('/pbp/(\d+[\w]{3})\.html',url)
+    game_id = re.search('/pbp/(\d+[\w]{3})\.html', url)
     game_id = game_id.group(1)
     soup = extract_soup(url)
     # make game object for this game

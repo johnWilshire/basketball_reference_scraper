@@ -16,10 +16,10 @@ class Event:
     distance, distance in feet that the shot was made
     """
 
-    def __init__(self,game, time, quater, team, player,event_type, makes_shot, distance, score,score_diff, assist_player=None):
+    def __init__(self,game, time, quarter, team, player,event_type, makes_shot, distance, score,score_diff, assist_player=None):
         self.game = game
         self.time = time
-        self.quater = quater
+        self.quarter = quarter
         self.team = team
         self.player = player
         self.score = score
@@ -30,6 +30,6 @@ class Event:
         self.assist_player = assist_player
 
     def headers(self):
-       return self.game.headers() + '|' + '|'.join(['team','quater','time','score','score_diff', 'event_type','makes_shot', 'distance', 'player.short_name','player.player_id'])
+       return self.game.headers() + '|' + '|'.join(['team','quarter','time','score','score_diff', 'event_type','makes_shot', 'distance', 'player.short_name','player.player_id'])
     def to_str(self):
-        return self.game.to_str() + '|' + '|'.join([self.team,self.quater,self.time,self.score,self.score_diff, self.event_type,self.makes_shot, self.distance, self.player.short_name, self.player.player_id])
+        return self.game.to_str() + '|' + '|'.join([self.team,self.quarter,self.time,self.score,self.score_diff, self.event_type,self.makes_shot, self.distance, self.player.short_name, self.player.player_id])
